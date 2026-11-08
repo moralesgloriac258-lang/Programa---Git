@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>`r`n<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -22,11 +22,11 @@
                 <c:otherwise><input type="hidden" name="accion" value="crear"></c:otherwise>
             </c:choose>
             <label for="nombre">Nombre completo <span>*</span></label>
-            <input id="nombre" name="nombre" type="text" maxlength="100" value="<c:out value='${cliente.nombre}'/>" placeholder="Ej. Laura Gómez" required autofocus>
+            <input id="nombre" name="nombre" type="text" maxlength="100" value="${fn:escapeXml(cliente.nombre)}" placeholder="Ej. Laura Gómez" required autofocus>
             <label for="telefono">Teléfono</label>
-            <input id="telefono" name="telefono" type="tel" maxlength="20" value="<c:out value='${cliente.telefono}'/>" placeholder="Ej. 300 123 4567">
+            <input id="telefono" name="telefono" type="tel" maxlength="20" value="${fn:escapeXml(cliente.telefono)}" placeholder="Ej. 300 123 4567">
             <label for="correo">Correo electrónico</label>
-            <input id="correo" name="correo" type="email" maxlength="100" value="<c:out value='${cliente.correo}'/>" placeholder="nombre@correo.com">
+            <input id="correo" name="correo" type="email" maxlength="100" value="${fn:escapeXml(cliente.correo)}" placeholder="nombre@correo.com">
             <div class="form-acciones"><a class="boton boton-claro" href="${pageContext.request.contextPath}/clientes">Cancelar</a><button class="boton boton-principal" type="submit">Guardar cliente</button></div>
         </form>
     </section>
@@ -34,3 +34,4 @@
 <footer>Hecho con ♡ para Dulce Conexión</footer>
 </body>
 </html>
+

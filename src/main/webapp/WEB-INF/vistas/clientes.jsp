@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>`r`n<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -32,7 +32,7 @@
     <form class="busqueda" method="get" action="${pageContext.request.contextPath}/clientes">
         <input type="hidden" name="accion" value="buscar">
         <label for="buscar-id">Buscar por ID</label>
-        <input id="buscar-id" name="id" type="number" min="1" placeholder="Ej. 3" value="<c:out value='${param.id}'/>" required>
+        <input id="buscar-id" name="id" type="number" min="1" placeholder="Ej. 3" value="${fn:escapeXml(param.id)}" required>
         <button class="boton boton-claro" type="submit">Buscar</button>
         <a class="limpiar" href="${pageContext.request.contextPath}/clientes">Ver todos</a>
     </form>
@@ -68,3 +68,4 @@
 <footer>Hecho con ♡ para Dulce Conexión</footer>
 </body>
 </html>
+
