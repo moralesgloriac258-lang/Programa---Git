@@ -1,0 +1,3 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Error | Dulce Conexión</title><link rel="stylesheet" href="${pageContext.request.contextPath}/assets/estilos.css"></head>
+<body><main class="contenedor formulario-contenedor"><section class="formulario-tarjeta"><p class="etiqueta">NO SE PUDO COMPLETAR</p><h1>Ups, ocurrió un problema.</h1><p class="subtitulo">${error}</p><a class="boton boton-principal" href="${pageContext.request.contextPath}/clientes">Volver a clientes</a></section></main></body></html>

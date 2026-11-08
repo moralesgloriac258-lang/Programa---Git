@@ -1,22 +1,21 @@
-# CupcakeApp — módulo CRUD de clientes
+# CupcakeApp — gestión web de clientes
 
-Aplicación de consola para administrar clientes de Dulce Conexión con Java, JDBC y MySQL. La estructura sigue el patrón por capas: configuración de conexión, modelo, acceso a datos (DAO) e interfaz de consola.
+Aplicación web de aprendizaje para el módulo de clientes de Dulce Conexión. Está construida con Java, JDBC, MySQL, Servlets, formularios HTML y JSP. Las JSP se usan como vistas y `ClienteServlet` controla las solicitudes; `ClienteDAO` consulta y modifica los datos.
 
 ## Requisitos
 
-- Java 17 o posterior
+- JDK 17
 - Apache Maven
-- MySQL Server y MySQL Workbench (opcional)
+- MySQL Server
+- Apache Tomcat 10.1 (implementa Jakarta Servlet 6.0 y Jakarta Pages/JSP 3.1)
 
-## Preparar la base de datos
+## 1. Crear la base de datos
 
-1. Abre MySQL Workbench y conéctate a tu servidor local.
-2. Abre `database/schema.sql` y ejecuta el script. Este crea la base `dulce_conexion` y la tabla `cliente`.
-3. Ten a la mano el usuario y la contraseña de tu servidor MySQL.
+Abre MySQL Workbench, conéctate a tu servidor y ejecuta el script `database/schema.sql`. Esto crea la base `dulce_conexion` y la tabla `cliente`.
 
-## Configurar la conexión en Windows PowerShell
+## 2. Configurar la conexión en VS Code (Windows)
 
-Abre una terminal nueva en VS Code y configura tus datos. Reemplaza `TU_CLAVE` por la contraseña de MySQL de tu computador:
+Abre la carpeta `Programa-Git` en VS Code. En **Terminal → Nueva terminal**, escribe tus datos de MySQL en PowerShell (cambia `TU_CLAVE` por tu contraseña):
 
 ```powershell
 $env:DB_URL = "jdbc:mysql://localhost:3306/dulce_conexion"
@@ -24,47 +23,58 @@ $env:DB_USER = "root"
 $env:DB_PASSWORD = "TU_CLAVE"
 ```
 
-La contraseña se configura en la terminal y no se guarda en el código.
+La contraseña queda en la terminal actual y no se guarda dentro del proyecto.
 
-## Ejecutar desde VS Code
+## 3. Crear y desplegar el WAR
 
-Abre la carpeta `Programa-Git` en VS Code, selecciona **Terminal → Nueva terminal**, ejecuta las tres líneas de configuración anteriores y luego:
+Desde la terminal, en la carpeta que contiene `pom.xml`, ejecuta:
 
 ```powershell
-mvn compile exec:java
+mvn clean package
 ```
 
-## Funciones del menú
-
-1. Registrar cliente.
-2. Consultar todos los clientes.
-3. Buscar un cliente por ID.
-4. Actualizar sus datos.
-5. Eliminar un cliente con confirmación.
-0. Salir.
-
-El DAO usa consultas preparadas (`PreparedStatement`) y cierra conexiones y resultados automáticamente. Los campos `nombre`, `telefono` y `correo` corresponden al modelo compartido. Nombre y correo de ejemplo no se insertan solos; la persona usuaria registra los datos desde el menú.
-
-## Estructura
+Se generará `target/DulceConexion.war`. Copia ese archivo a la carpeta `webapps` de Tomcat 10.1 e inicia Tomcat. Abre en el navegador:
 
 ```text
-Programa-Git/
-├── database/schema.sql
-├── src/main/java/co/com/dulceconexion/
-│   ├── config/ConexionBD.java
-│   ├── dao/ClienteDAO.java
-│   ├── main/Principal.java
-│   └── modelo/Cliente.java
-├── pom.xml
-└── kotlin.txt
+http://localhost:8080/DulceConexion/
 ```
 
-## Git
+Para conectar Tomcat con MySQL, inicia Tomcat desde una terminal que tenga configuradas las tres variables de entorno del paso 2.
 
-El proyecto ya tiene historial local en la rama `master`. Cuando crees el repositorio público `Programa-Git`, enlázalo con su URL HTTPS y publica los commits:
+## Funciones disponibles
+
+- **GET** `/clientes`: lista los clientes.
+- **GET** `/clientes?accion=nuevo`: muestra el formulario vacío.
+- **GET** `/clientes?accion=editar&id=1`: muestra un cliente para editar.
+- **GET** `/clientes?accion=buscar&id=1`: busca por ID.
+- **POST** `/clientes` con `accion=crear`: registra un cliente.
+- **POST** `/clientes` con `accion=actualizar`: actualiza los datos.
+- **POST** `/clientes` con `accion=eliminar`: elimina el cliente después de confirmar.
+
+El formulario solicita nombre, teléfono y correo. Las JSP están protegidas bajo `WEB-INF` y se renderizan por medio del Servlet.
+
+## Estructura principal
+
+```text
+src/main/java/co/com/dulceconexion/
+├── config/ConexionBD.java
+├── dao/ClienteDAO.java
+├── modelo/Cliente.java
+└── web/ClienteServlet.java
+src/main/webapp/
+├── index.jsp
+├── assets/estilos.css
+└── WEB-INF/vistas/
+    ├── clientes.jsp
+    ├── cliente-formulario.jsp
+    └── error.jsp
+```
+
+## Versionamiento
+
+El proyecto tiene historial Git local en la rama `master`. Cuando crees un repositorio remoto, enlázalo con la URL HTTPS real y publica los cambios:
 
 ```bash
 git remote add github https://github.com/<tu-usuario>/Programa-Git.git
-git remote -v
 git push -u github master
 ```
