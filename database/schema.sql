@@ -1,4 +1,6 @@
-CREATE DATABASE IF NOT EXISTS dulce_conexion;
+CREATE DATABASE IF NOT EXISTS dulce_conexion
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
 USE dulce_conexion;
 
 CREATE TABLE IF NOT EXISTS cliente (

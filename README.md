@@ -1,27 +1,70 @@
 # CupcakeApp — módulo CRUD de clientes
 
-Proyecto Maven de ejemplo para gestionar clientes de Dulce Conexión con Java, JDBC y MySQL.
+Aplicación de consola para administrar clientes de Dulce Conexión con Java, JDBC y MySQL. La estructura sigue el patrón por capas: configuración de conexión, modelo, acceso a datos (DAO) e interfaz de consola.
 
 ## Requisitos
 
 - Java 17 o posterior
-- Maven
-- MySQL con la base de datos definida en `database/schema.sql`
+- Apache Maven
+- MySQL Server y MySQL Workbench (opcional)
 
-Configure antes de ejecutar estas variables de entorno: `DB_URL` (por defecto `jdbc:mysql://localhost:3306/dulce_conexion`), `DB_USER` (por defecto `root`) y `DB_PASSWORD`.
+## Preparar la base de datos
 
-## Versionamiento
+1. Abre MySQL Workbench y conéctate a tu servidor local.
+2. Abre `database/schema.sql` y ejecuta el script. Este crea la base `dulce_conexion` y la tabla `cliente`.
+3. Ten a la mano el usuario y la contraseña de tu servidor MySQL.
 
-El repositorio local se llama `Programa-Git` y usa la rama `master` para seguir la guía del ejercicio. Tras crear el repositorio público remoto, reemplace la URL de ejemplo por su URL HTTPS:
+## Configurar la conexión en Windows PowerShell
 
-```bash
-git remote add github https://github.com/<usuario>/Programa-Git.git
-git remote -v
-git push -u github master
+Abre una terminal nueva en VS Code y configura tus datos. Reemplaza `TU_CLAVE` por la contraseña de MySQL de tu computador:
+
+```powershell
+$env:DB_URL = "jdbc:mysql://localhost:3306/dulce_conexion"
+$env:DB_USER = "root"
+$env:DB_PASSWORD = "TU_CLAVE"
 ```
 
-Para el paso de datos personales, el archivo `kotlin.txt` se añade en un segundo commit. Después de conectar el remoto, súbalo con:
+La contraseña se configura en la terminal y no se guarda en el código.
+
+## Ejecutar desde VS Code
+
+Abre la carpeta `Programa-Git` en VS Code, selecciona **Terminal → Nueva terminal**, ejecuta las tres líneas de configuración anteriores y luego:
+
+```powershell
+mvn compile exec:java
+```
+
+## Funciones del menú
+
+1. Registrar cliente.
+2. Consultar todos los clientes.
+3. Buscar un cliente por ID.
+4. Actualizar sus datos.
+5. Eliminar un cliente con confirmación.
+0. Salir.
+
+El DAO usa consultas preparadas (`PreparedStatement`) y cierra conexiones y resultados automáticamente. Los campos `nombre`, `telefono` y `correo` corresponden al modelo compartido. Nombre y correo de ejemplo no se insertan solos; la persona usuaria registra los datos desde el menú.
+
+## Estructura
+
+```text
+Programa-Git/
+├── database/schema.sql
+├── src/main/java/co/com/dulceconexion/
+│   ├── config/ConexionBD.java
+│   ├── dao/ClienteDAO.java
+│   ├── main/Principal.java
+│   └── modelo/Cliente.java
+├── pom.xml
+└── kotlin.txt
+```
+
+## Git
+
+El proyecto ya tiene historial local en la rama `master`. Cuando crees el repositorio público `Programa-Git`, enlázalo con su URL HTTPS y publica los commits:
 
 ```bash
-git push github master
+git remote add github https://github.com/<tu-usuario>/Programa-Git.git
+git remote -v
+git push -u github master
 ```

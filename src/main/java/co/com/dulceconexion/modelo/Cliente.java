@@ -1,5 +1,6 @@
 package co.com.dulceconexion.modelo;
 
+/** Representa los datos de un cliente de Dulce Conexión. */
 public class Cliente {
     private int id;
     private String nombre;
@@ -23,4 +24,10 @@ public class Cliente {
     public void setTelefono(String telefono) { this.telefono = telefono; }
     public String getCorreo() { return correo; }
     public void setCorreo(String correo) { this.correo = correo; }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + " | Nombre: " + nombre
+                + " | Teléfono: " + telefono + " | Correo: " + correo;
+    }
 }
